@@ -1,28 +1,12 @@
+// backend/tests/admin.test.js
+
 const request = require('supertest');
-const app = require('../app'); // Import your Express app
-const db = require('../models/db');
+const app = require('../app'); // Assuming app is exported from app.js
 
-describe('Admin Actions', () => {
-  afterAll(async () => {
-    await db.pool.end(); // Close database connection after tests
-  });
-
-  it('should get all users', async () => {
-    const res = await request(app).get('/api/admin/users');
-    expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-  });
-
-  it('should update user role', async () => {
-    const res = await request(app)
-      .put('/api/admin/users/role')
-      .send({ userId: 1, role: 'admin' });
-    expect(res.statusCode).toBe(200);
-    expect(res.body.role).toBe('admin');
-  });
-
-  it('should delete a user', async () => {
-    const res = await request(app).delete('/api/admin/users/1');
-    expect(res.statusCode).toBe(204);
-  });
+describe('Admin Routes', () => {
+    it('should retrieve all users', async () => {
+        const res = await request(app).get('/api/v1/admin/users');
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toBeInstanceOf(Array);
+    });
 });

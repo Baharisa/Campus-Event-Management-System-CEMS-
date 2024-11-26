@@ -1,75 +1,76 @@
-// controllers/userController.js
-const bcrypt = require('bcrypt'); // For password hashing
-const jwt = require('jsonwebtoken'); // For JWT handling
+// backend/controllers/userController.js
 
-// PostgreSQL pool connection (imported or passed as argument)
-let pool; // Make sure to set this correctly
+const User = require('../models/user'); // Assuming User is a Sequelize model
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-// Register a new user
+// User registration
 exports.registerUser = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
+
+    // Basic validation
+    if (!username || !password || !email) {
+        return res.status(400).json({ message: 'Username, password, and email are required' });
+    }
+
     try {
+        // Check if the user already exists
+        const existingUser = await User.findOne({ where: { username } });
+        if (existingUser) {
+            return res.status(409).json({ message: 'Username already exists' });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
-        const result = await pool.query('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *', [username, hashedPassword]);
-        res.status(201).json(result.rows[0]);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server error');
+        const newUser = await User.create({ username, password: hashedPassword, email });
+        res.status(201).json({ id: newUser.id, username: newUser.username, email: newUser.email });
+    } catch (error) {
+        console.error('Error registering user:', error);
+        res.status(500).json({ message: 'Error registering user' });
     }
 };
 
-// Login user
+// User login
 exports.loginUser = async (req, res) => {
     const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Username and password are required' });
+    }
+
     try {
-        const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
-        if (result.rows.length > 0) {
-            const user = result.rows[0];
-            const isValid = await bcrypt.compare(password, user.password);
-            if (isValid) {
-                const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
-                return res.json({ token });
-            }
+        const user = await User.findOne({ where: { username } });
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
-        res.status(401).send('Invalid credentials');
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server error');
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({ token });
+    } catch (error) {
+        console.error('Error logging in:', error);
+        res.status(500).json({ message: 'Error logging in' });
     }
 };
 
 // Get user profile
 exports.getUserProfile = async (req, res) => {
-    const userId = req.params.userId;
-    try {
-        const result = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
-        if (result.rows.length > 0) {
-            return res.json(result.rows[0]);
-        }
-        res.status(404).send('User not found');
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server error');
-    }
-};
+    const { userId } = req.params;
 
-// Update user profile
-exports.updateUserProfile = async (req, res) => {
-    const { userId, username, password } = req.body;
     try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const result = await pool.query('UPDATE users SET username = $1, password = $2 WHERE id = $3 RETURNING *', [username, hashedPassword, userId]);
-        if (result.rows.length > 0) {
-            return res.json(result.rows[0]);
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
-        res.status(404).send('User not found');
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server error');
-    }
-};
 
-// Set the PostgreSQL pool connection
-exports.setPool = (p) => {
-    pool = p;
+        // Exclude sensitive data
+        const { password, ...userData } = user.get(); // Assuming user is a Sequelize instance
+        res.status(200).json(userData);
+    } catch (error) {
+        console.error('Error fetching user profile:', error);
+        res.status(500).json({ message: 'Error fetching user profile' });
+    }
 };

@@ -1,19 +1,20 @@
+// backend/routes/v1/reservationRoutes.js
+
 const express = require('express');
 const {
-  reserveEvent,
-  getUserReservations,
-  cancelReservation,
-} = require('../controllers/reservationController');
-
+    createReservation,
+    getUserReservations,
+    cancelReservation
+} = require('../../controllers/reservationController');
 const router = express.Router();
 
-// Reserve an event
-router.post('/', reserveEvent);
+// Route to create a reservation
+router.post('/', createReservation);
 
-// Get reservations for a user
-router.get('/user/:userId', getUserReservations);
+// Route to get reservations for a user
+router.get('/:userId', getUserReservations);
 
-// Cancel a reservation
+// Route to cancel a reservation
 router.delete('/:reservationId', cancelReservation);
 
 module.exports = router;

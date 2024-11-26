@@ -1,23 +1,32 @@
-const db = require('./db');
+// backend/models/report.js
 
-// Get report of users and their reservations
-exports.getUserReservationReport = async () => {
-  const result = await db.query(`
-    SELECT users.username, COUNT(reservations.id) AS reservation_count
-    FROM users
-    LEFT JOIN reservations ON users.id = reservations.user_id
-    GROUP BY users.username
-  `);
-  return result.rows;
-};
+const { DataTypes } = require('sequelize');
+const sequelize = require('./db');
+const User = require('./user');
 
-// Get report of events and their feedback
-exports.getEventFeedbackReport = async () => {
-  const result = await db.query(`
-    SELECT events.title, COUNT(feedback.id) AS feedback_count
-    FROM events
-    LEFT JOIN feedback ON events.id = feedback.event_id
-    GROUP BY events.title
-  `);
-  return result.rows;
-};
+const Report = sequelize.define('Report', {
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+    },
+    userId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id',
+        },
+    },
+    content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+    },
+}, {
+    timestamps: true,
+});
+
+// Sync the model with the database
+Report.sync();
+
+module.exports = Report;

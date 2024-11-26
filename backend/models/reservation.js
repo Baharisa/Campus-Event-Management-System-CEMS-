@@ -1,21 +1,37 @@
-const db = require('./db');
+// backend/models/reservation.js
 
-// Reserve an event
-exports.reserveEvent = async (userId, eventId) => {
-  const result = await db.query(
-    'INSERT INTO reservations (user_id, event_id) VALUES ($1, $2) RETURNING *',
-    [userId, eventId]
-  );
-  return result.rows[0];
-};
+const { DataTypes } = require('sequelize');
+const sequelize = require('./db');
+const User = require('./user');
+const Event = require('./event');
 
-// Get all reservations for a user
-exports.getUserReservations = async (userId) => {
-  const result = await db.query('SELECT * FROM reservations WHERE user_id = $1', [userId]);
-  return result.rows;
-};
+const Reservation = sequelize.define('Reservation', {
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+    },
+    userId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id',
+        },
+    },
+    eventId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            model: Event,
+            key: 'id',
+        },
+    },
+}, {
+    timestamps: true,
+});
 
-// Cancel a reservation
-exports.cancelReservation = async (id) => {
-  await db.query('DELETE FROM reservations WHERE id = $1', [id]);
-};
+// Sync the model with the database
+Reservation.sync();
+
+module.exports = Reservation;

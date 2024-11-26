@@ -1,10 +1,7 @@
- -- database/setup.sql
+-- backend/database/setup.sql
 
--- Create the database (adjust the name as needed)
-CREATE DATABASE IF NOT EXISTS cems;
-
--- Use the created database
-USE cems;
-
--- Optionally, set SQL modes or other settings
-SET sql_mode = 'STRICT_ALL_TABLES';
+\i ./migrations/create-users.sql
+\i ./migrations/create-events.sql
+\i ./migrations/create-reservations.sql
+\i ./migrations/create-feedback.sql
+\i ./seed.sql

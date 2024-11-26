@@ -1,107 +1,26 @@
-/* frontend/css/styles.css */
-* {
-    box-sizing: border-box;
-}
-
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-}
-
-header {
-    background: #35424a;
-    color: #ffffff;
-    padding: 20px;
-    text-align: center;
-}
-
-h1 {
+  }
+  nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    background-color: #333;
+  }
+  nav ul li {
     margin: 0;
-}
-
-.container {
-    width: 90%;
-    margin: auto;
-    overflow: hidden;
-}
-
-.button {
-    display: inline-block;
     padding: 10px 20px;
-    background: #5cb85c;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.button:hover {
-    background: #4cae4c;
-}
-
-.carousel {
-    display: flex;
-    overflow: hidden;
-    position: relative;
-}
-
-.carousel-item {
-    min-width: 100%;
-    transition: transform 0.5s ease;
-}
-
-.carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+  }
+  nav ul li a {
+    text-decoration: none;
     color: white;
-    font-size: 2rem;
-    cursor: pointer;
-}
-
-.carousel-prev {
-    left: 10px;
-}
-
-.carousel-next {
-    right: 10px;
-}
-
-.event-card {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    margin: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-}
-
-.event-card:hover {
-    transform: scale(1.05);
-}
-
-footer {
-    background: #35424a;
-    color: #ffffff;
+  }
+  footer {
     text-align: center;
-    padding: 20px 0;
-}
-
-.calendar {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.calendar-day {
-    flex: 1 0 14%; /* 7 days a week */
-    padding: 10px;
-    border: 1px solid #ddd;
-    margin: 5px;
-    text-align: center;
-    background-color: #ffffff;
-    border-radius: 5px;
-}
+    padding: 10px 0;
+    background-color: #333;
+    color: white;
+  }
+  

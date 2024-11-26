@@ -1,39 +1,30 @@
-const db = require('../models/db'); // Assuming db.js has your database connection
+// backend/controllers/adminController.js
 
-// Get all users for admin
+const User = require('../models/user'); // Assuming User is a Sequelize model
+
+// Get all users
 exports.getAllUsers = async (req, res) => {
-  try {
-    const result = await db.query('SELECT * FROM users');
-    res.status(200).json(result.rows);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+    try {
+        const users = await User.findAll();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching users', error });
+    }
 };
 
 // Update user role
 exports.updateUserRole = async (req, res) => {
-  const { userId, role } = req.body;
-  try {
-    const result = await db.query('UPDATE users SET role = $1 WHERE id = $2 RETURNING *', [role, userId]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'User not found' });
+    const { userId, role } = req.body;
+    try {
+        const user = await User.findByPk(userId);
+        if (user) {
+            user.role = role;
+            await user.save();
+            res.status(200).json({ message: 'User role updated successfully' });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating user role', error });
     }
-    res.status(200).json(result.rows[0]);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Delete a user
-exports.deleteUser = async (req, res) => {
-  const { userId } = req.params;
-  try {
-    const result = await db.query('DELETE FROM users WHERE id = $1 RETURNING *', [userId]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.status(204).send();
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
 };

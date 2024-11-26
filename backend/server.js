@@ -1,8 +1,16 @@
-// server.js
+// backend/server.js
+
 const app = require('./app');
+const sequelize = require('./models/db'); // Import the database connection
+const PORT = process.env.PORT || 3000;
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// Sync database and start server
+sequelize.sync()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error('Database connection error:', err);
+    });

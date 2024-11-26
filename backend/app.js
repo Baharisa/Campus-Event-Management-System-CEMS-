@@ -1,29 +1,39 @@
-// app.js
+// backend/app.js
+
 const express = require('express');
-const dotenv = require('dotenv');
-const pool = require('./models/db'); // Updated import path
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const morgan = require('morgan'); // For logging requests
 
-dotenv.config();
+// Import routes
+const adminRoutes = require('./routes/v1/adminRoutes');
+const eventRoutes = require('./routes/v1/eventRoutes');
+const reservationRoutes = require('./routes/v1/reservationRoutes');
+const userRoutes = require('./routes/v1/userRoutes');
+const feedbackRoutes = require('./routes/v1/feedbackRoutes');
+const searchRoutes = require('./routes/v1/searchRoutes');
 
+// Import middleware
+const errorMiddleware = require('./middleware/errorMiddleware');
+
+// Create an Express application
 const app = express();
 
-// Middleware to parse JSON requests
-app.use(express.json());
+// Middleware setup
+app.use(cors()); // Enable CORS
+app.use(bodyParser.json()); // Parse JSON bodies
+app.use(morgan('dev')); // Log requests to the console
 
-// Example route to fetch data from the events table
-app.get('/api/events', async (req, res) => {
-    try {
-        const result = await pool.query('SELECT * FROM events'); // Adjust according to your table
-        res.json(result.rows);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Server error');
-    }
-});
+// Define routes
+app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/events', eventRoutes);
+app.use('/api/v1/reservations', reservationRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/feedback', feedbackRoutes);
+app.use('/api/v1/search', searchRoutes);
 
-// Root endpoint
-app.get('/', (req, res) => {
-    res.send('Welcome to the Campus Event Management System (CEMS)');
-});
+// Error handling middleware
+app.use(errorMiddleware);
 
-module.exports = app; // Export the app for use in server.js
+// Export the app
+module.exports = app;

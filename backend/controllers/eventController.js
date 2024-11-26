@@ -1,56 +1,61 @@
-const db = require('../models/db');
+// backend/controllers/eventController.js
+
+const Event = require('../models/event'); // Assuming Event is a Sequelize model
 
 // Create a new event
 exports.createEvent = async (req, res) => {
-  const { title, description, date, location } = req.body;
-  try {
-    const result = await db.query(
-      'INSERT INTO events (title, description, date, location) VALUES ($1, $2, $3, $4) RETURNING *',
-      [title, description, date, location]
-    );
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+    const { title, description, date, location } = req.body;
+    try {
+        const newEvent = await Event.create({ title, description, date, location });
+        res.status(201).json(newEvent);
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating event', error });
+    }
 };
 
-// Get all events
+// Retrieve all events
 exports.getAllEvents = async (req, res) => {
-  try {
-    const result = await db.query('SELECT * FROM events ORDER BY date ASC');
-    res.status(200).json(result.rows);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+    try {
+        const events = await Event.findAll();
+        res.status(200).json(events);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching events', error });
+    }
 };
 
 // Update an event
 exports.updateEvent = async (req, res) => {
-  const { eventId, title, description, date, location } = req.body;
-  try {
-    const result = await db.query(
-      'UPDATE events SET title = $1, description = $2, date = $3, location = $4 WHERE id = $5 RETURNING *',
-      [title, description, date, location, eventId]
-    );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'Event not found' });
+    const { eventId } = req.params;
+    const { title, description, date, location } = req.body;
+    try {
+        const event = await Event.findByPk(eventId);
+        if (event) {
+            event.title = title;
+            event.description = description;
+            event.date = date;
+            event.location = location;
+            await event.save();
+            res.status(200).json(event);
+        } else {
+            res.status(404).json({ message: 'Event not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating event', error });
     }
-    res.status(200).json(result.rows[0]);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
 };
 
 // Delete an event
 exports.deleteEvent = async (req, res) => {
-  const { eventId } = req.params;
-  try {
-    const result = await db.query('DELETE FROM events WHERE id = $1 RETURNING *', [eventId]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'Event not found' });
+    const { eventId } = req.params;
+    try {
+        const event = await Event.findByPk(eventId);
+        if (event) {
+            await event.destroy();
+            res.status(204).json();
+        } else {
+            res.status(404).json({ message: 'Event not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting event', error });
     }
-    res.status(204).send();
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
 };

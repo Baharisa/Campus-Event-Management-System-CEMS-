@@ -1,16 +1,41 @@
-const db = require('./db');
+// backend/models/feedback.js
 
-// Submit feedback
-exports.submitFeedback = async (userId, eventId, comments) => {
-  const result = await db.query(
-    'INSERT INTO feedback (user_id, event_id, comments) VALUES ($1, $2, $3) RETURNING *',
-    [userId, eventId, comments]
-  );
-  return result.rows[0];
-};
+const { DataTypes } = require('sequelize');
+const sequelize = require('./db');
+const User = require('./user');
+const Event = require('./event');
 
-// Get all feedback for an event
-exports.getFeedbackForEvent = async (eventId) => {
-  const result = await db.query('SELECT * FROM feedback WHERE event_id = $1', [eventId]);
-  return result.rows;
-};
+const Feedback = sequelize.define('Feedback', {
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+    },
+    userId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id',
+        },
+    },
+    eventId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            model: Event,
+            key: 'id',
+        },
+    },
+    feedbackText: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+    },
+}, {
+    timestamps: true,
+});
+
+// Sync the model with the database
+Feedback.sync();
+
+module.exports = Feedback;

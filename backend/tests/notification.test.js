@@ -1,17 +1,10 @@
-const request = require('supertest');
-const app = require('../app');
+// backend/tests/notification.test.js
 
-describe('Notification Management', () => {
-  it('should send a notification', async () => {
-    // Placeholder for notification send test
-    const notification = {
-      userId: 1,
-      message: 'Test notification',
-    };
-    const res = await request(app).post('/api/notifications').send(notification);
-    expect(res.statusCode).toBe(201);
-    expect(res.body.message).toBe(notification.message);
-  });
+const { sendEmail } = require('../services/notificationService');
 
-  // Additional notification tests can be added here.
+describe('Notification Service', () => {
+    it('should send an email', async () => {
+        const response = await sendEmail('test@example.com', 'Test Subject', 'Test Email Body');
+        expect(response).toHaveProperty('accepted');
+    });
 });
