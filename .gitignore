@@ -1,28 +1,87 @@
-# Node modules
+# Node.js dependencies
 node_modules/
-
-# Logs
-logs
-*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Environment variables
 .env
 
-# Build output
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database files
+*.sqlite
+*.sqlite3
+pgdata/
+*.db
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+Icon?
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.iml
+
+# Testing and coverage
+coverage/
+test-results/
+
+# Build and dist
 dist/
 build/
 
 # Temporary files
 *.tmp
+*.temp
+*.pid
+*.seed
+*.pid.lock
 
-# IDE specific files
-.idea/
-.vscode/
+# System files
+*.bak
+*.swp
+*.swo
+*.lock
 
-# Coverage reports
-coverage/
+# Config files
+/config/*.json
+/config/*.local.js
 
-# Other files to ignore
-*.tgz
+# Frontend files (if applicable)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Bundler files
+*.bundle.js
+*.map
+
+# Miscellaneous
 *.gz
+*.tgz
 *.zip
+*.7z
+*.tar
+
+# Ignore AppData (if Windows paths are included)
+AppData/
+
+# Ignore by file type
+*.log
+*.out
+*.rpt
+*.cache
+*.bak
+*.stackdump
+*.old
+
+# Ignore production secrets (example file for sharing)
+secrets.json
