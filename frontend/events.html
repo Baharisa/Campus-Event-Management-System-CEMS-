@@ -4,22 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
-    <title>Event Listing - CEMS</title>
+    <title>Events - CEMS</title>
     <style>
-        /* General Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f0f4f8;
         }
-
         nav {
             background-color: #333;
             overflow: hidden;
             margin-bottom: 20px;
         }
-
         nav ul {
             list-style-type: none;
             padding: 0;
@@ -27,11 +24,9 @@
             display: flex;
             justify-content: space-around;
         }
-
         nav ul li {
             position: relative;
         }
-
         nav ul li a {
             display: block;
             color: white;
@@ -39,12 +34,10 @@
             padding: 14px 16px;
             text-decoration: none;
         }
-
         nav ul li a:hover {
             background-color: #ddd;
             color: black;
         }
-
         .dropdown-content {
             display: none;
             position: absolute;
@@ -52,36 +45,22 @@
             min-width: 160px;
             z-index: 1;
         }
-
         nav ul li:hover .dropdown-content {
             display: block;
         }
-
         .dropdown-content a {
             color: black;
             padding: 12px 16px;
             text-decoration: none;
             display: block;
         }
-
         .dropdown-content a:hover {
             background-color: #f1f1f1;
         }
-
         header {
             text-align: center;
             margin-bottom: 20px;
-            background-color: #1a73e8;
-            color: white;
-            padding: 15px 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
-
-        header h1 {
-            margin: 0;
-        }
-
         .container {
             max-width: 800px;
             margin: auto;
@@ -90,50 +69,50 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
         .event {
             margin-bottom: 20px;
             padding: 15px;
             border: 1px solid #e0e0e0;
             border-radius: 5px;
         }
-
         .event h2 {
             color: #1a73e8;
             margin: 0;
         }
-
-        .event img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #155a8a;
-        }
-
         footer {
             text-align: center;
             margin-top: 20px;
             font-size: 14px;
             color: #777;
         }
+        .navigation {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #155a8a;
+        }
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .button {
+                width: 100%; /* Make buttons full width on small screens */
+                margin: 5px 0;
+            }
+        }
     </style>
 </head>
 <body>
-
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
@@ -152,48 +131,57 @@
     </nav>
     
     <header>
-        <h1>Event Listing</h1>
+        <h1>Events</h1>
         <button class="button" onclick="window.location.href='calendar.html'">View Calendar</button>
     </header>
     
     <div class="container">
-        <div id="events-list">
+        <h2>Upcoming Events</h2>
+        <div id="upcoming-events">
             <div class="event">
                 <h2>Tech Innovations Conference 2024</h2>
-                <img src="images/conference.jfif" alt="Tech Innovations Conference">
                 <p><strong>Date:</strong> March 15, 2024</p>
                 <p><strong>Location:</strong> Downtown Convention Center</p>
                 <p><strong>Description:</strong> Join us for an insightful day exploring the latest in technology and innovation. Learn from industry leaders, network with peers, and enjoy hands-on workshops.</p>
-                <p><strong>Benefits:</strong> Gain insights into emerging trends, enhance your skills, and connect with potential collaborators.</p>
-                <p><strong>Age Restrictions:</strong> 18+</p>
-                <p><strong>Cancellation Policy:</strong> Full refund if canceled 30 days prior.</p>
-                <p><strong>Transportation:</strong> Accessible via public transport. Parking available.</p>
-                <p><strong>Event Tags:</strong> Technology, Conference, Networking</p>
                 <button onclick="window.location.href='register.html'">RSVP Now</button>
             </div>
 
             <div class="event">
                 <h2>Annual Charity Run</h2>
-                <img src="images/charity-run.jfif" alt="Annual Charity Run">
                 <p><strong>Date:</strong> April 22, 2024</p>
                 <p><strong>Location:</strong> City Park</p>
                 <p><strong>Description:</strong> Participate in our charity run to support local charities. Enjoy a day of fitness and fun while making a difference in the community.</p>
-                <p><strong>Benefits:</strong> Improve your health, meet new people, and support a good cause.</p>
-                <p><strong>Age Restrictions:</strong> All ages welcome.</p>
-                <p><strong>Cancellation Policy:</strong> No refunds for registration fees.</p>
-                <p><strong>Transportation:</strong> Public transport available; bike parking provided.</p>
-                <p><strong>Event Tags:</strong> Charity, Fitness, Community</p>
                 <button onclick="window.location.href='register.html'">RSVP Now</button>
             </div>
-
-            <!-- Add more events as needed -->
         </div>
+
+        <h2>Past Events</h2>
+        <div id="past-events">
+            <div class="event">
+                <h2>Community Arts Festival 2023</h2>
+                <p><strong>Date:</strong> November 10, 2023</p>
+                <p><strong>Location:</strong> Community Center</p>
+                <p><strong>Description:</strong> A celebration of local art and culture featuring exhibitions, performances, and workshops.</p>
+            </div>
+
+            <div class="event">
+                <h2>Summer Music Festival 2023</h2>
+                <p><strong>Date:</strong> July 15, 2023</p>
+                <p><strong>Location:</strong> City Park</p>
+                <p><strong>Description:</strong> An outdoor music festival showcasing local bands and artists.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="button" onclick="window.history.back()">Previous</button>
+        <button class="button" onclick="window.location.href='next-page.html'">Next</button>
     </div>
     
     <footer>
-        <p>&copy; 2024 CEMS</p>
+        <p>&copy; 2024 Campus Event Management System (CEMS)</p>
     </footer>
-
+    
     <script src="js/api.js" type="module"></script>
     <script src="js/main.js" type="module"></script>
 </body>

@@ -1,1 +1,34 @@
- 
+{
+    "name": "cems",
+    "version": "1.0.0",
+    "description": "Campus Events Management System",
+    "main": "backend/server.js",
+    "scripts": {
+        "start": "node backend/server.js",
+        "dev": "nodemon backend/server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "events",
+        "management",
+        "system"
+    ],
+    "author": "Baharisa",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.20.3",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.21.1",
+        "nodemon": "^2.0.22",
+        "package-name": "^0.1.0",
+        "pg": "^8.13.1"
+    },
+    "devDependencies": {
+        "jest": "^27.0.0",
+        "supertest": "^6.1.6"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    }
+}

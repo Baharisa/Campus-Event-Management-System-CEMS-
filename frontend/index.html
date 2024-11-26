@@ -1,1 +1,263 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - CEMS</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f0f4f8;
+        }
+
+        header,
+        footer {
+            background-color: #1a73e8;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        header h1,
+        footer p {
+            margin: 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #1a73e8;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            top: 100%;
+        }
+
+        .dropdown-content a {
+            color: #ffffff;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #555;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Hero Section with Background Image */
+        .hero {
+            background: url('images/college-background.jpg') center/cover no-repeat, 
+                        linear-gradient(to right, rgba(26, 115, 232, 0.5), rgba(66, 133, 244, 0.5));
+            color: white;
+            text-align: center;
+            padding: 120px 20px;
+            height: 500px; /* Adjust height as needed */
+        }
+
+        .hero h2 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .hero button {
+            padding: 12px 24px;
+            font-size: 1.2em;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .hero button:hover {
+            background-color: #e64a19;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 20px;
+            flex-wrap: wrap;
+        }
+
+        .main-content div {
+            flex: 1;
+            padding: 20px;
+            background-color: #ffffff;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .reservation,
+        .events {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .reservation h4,
+        .events h4 {
+            color: #1976d2;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a73e8;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        /* Styling for Buttons and Cards */
+        .button {
+            background-color: #4285f4;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background-color: #3367d6;
+        }
+
+        .event-card {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-card h4 {
+            color: #1976d2;
+            margin: 0;
+        }
+
+        .event-card p {
+            font-size: 1em;
+            color: #444;
+        }
+
+        .event-image {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Campus Event Management System (CEMS)</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="calendar.html">Calendar</a></li>
+                <li class="dropdown">
+                    <a href="events.html">Events</a>
+                    <div class="dropdown-content">
+                        <a href="event-listing.html">Upcoming Events</a>
+                        <a href="past-events.html">Past Events</a>
+                    </div>
+                </li>
+                <li><a href="feedback.html">Feedback</a></li>
+                <li><a href="profile.html">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h2>Welcome to CEMS</h2>
+        <p>Your one-stop solution for managing campus events.</p>
+        <button onclick="window.location.href='event-listing.html'">Explore Events</button>
+    </div>
+
+    <div class="main-content">
+        <div class="left">
+            <h3>Upcoming Events</h3>
+            <div class="event-card">
+                <img src="images/event1.png" alt="On-campus concerts" class="event-image">
+                <h4>On-campus concerts</h4>
+                <p>Date: March 12, 2024</p>
+                <p>Description of the event goes here.</p>
+                <a href="event-details.html" class="button">More Details</a>
+            </div>
+            <div class="event-card">
+                <img src="images/event2.png" alt="Dorm decor crafts" class="event-image">
+                <h4>Dorm decor crafts</h4>
+                <p>Date: March 20, 2024</p>
+                <p>Description of the event goes here.</p>
+                <a href="event-details.html" class="button">More Details</a>
+            </div>
+            <!-- Add more event cards as needed -->
+        </div>
+
+        <div class="right">
+            <h3>Latest News</h3>
+            <div class="reservation">
+                <h4>Registration Open!</h4>
+                <p>Register for upcoming events now!</p>
+                <a href="registration.html" class="button">Register Now</a>
+            </div>
+            <div class="events">
+                <h4>Past Events Summary</h4>
+                <p>Check out the summary of our past events.</p>
+                <a href="past-events.html" class="button">View Past Events</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Campus Event Management System. All Rights Reserved.</p>
+    </footer>
+</body>
+
+</html>
