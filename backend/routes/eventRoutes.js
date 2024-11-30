@@ -1,31 +1,55 @@
 const express = require('express');
-const {
-  createEvent,
-  getAllEvents,
-  updateEvent,
-  deleteEvent,
-  registerForEvent,
-} = require('../controllers/eventController'); // Ensure the correct path
+const { Pool } = require('pg'); // PostgreSQL
+
 const router = express.Router();
 
-// @route   GET /api/v1/events
+// Initialize PostgreSQL connection pool
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
+
 // @desc    Get all events
-router.get('/', getAllEvents);
+// @route   GET /api/v1/events
+router.get('/', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM events ORDER BY event_date ASC');
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    res.status(500).send('Server Error');
+  }
+});
 
-// @route   POST /api/v1/events
+// @desc    Get past events
+// @route   GET /api/v1/events/past-events
+router.get('/past-events', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM events WHERE event_date < NOW() ORDER BY event_date DESC');
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Error fetching past events:', error);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @desc    Create a new event
-router.post('/', createEvent);
-
-// @route   PUT /api/v1/events/:eventId
-// @desc    Update an event by ID
-router.put('/:eventId', updateEvent);
-
-// @route   DELETE /api/v1/events/:eventId
-// @desc    Delete an event by ID
-router.delete('/:eventId', deleteEvent);
-
-// @route   POST /api/v1/events/:eventId/register
-// @desc    Register a user for an event
-router.post('/:eventId/register', registerForEvent);
+// @route   POST /api/v1/events
+router.post('/', async (req, res) => {
+  const { title, description, event_date, location, image } = req.body;
+  try {
+    const result = await pool.query(
+      'INSERT INTO events (title, description, event_date, location, image) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [title, description, event_date, location, image]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Error creating event:', error);
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;

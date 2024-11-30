@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Events - CEMS</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header, footer {
+            background-color: #1a73e8;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 10px;
+            scroll-snap-type: x mandatory;
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-item {
+            flex: 0 0 300px;
+            scroll-snap-align: center;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: left;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .carousel-item h3 {
+            margin: 10px 0 5px;
+            color: #1a73e8;
+        }
+
+        .carousel-item p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .carousel-item .date {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .carousel-controls {
+            margin-top: 20px;
+        }
+
+        .carousel-button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .carousel-button:hover {
+            background-color: #155bb5;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Past Events</h1>
+    </header>
+    <div class="container">
+        <div class="carousel" id="past-events-carousel">
+            <p>Loading past events...</p>
+        </div>
+        <div class="carousel-controls">
+            <button class="carousel-button" onclick="scrollCarousel(-1)">❮ Previous</button>
+            <button class="carousel-button" onclick="scrollCarousel(1)">Next ❯</button>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Campus Event Management System</p>
+    </footer>
+
+    <script>
+        async function fetchPastEvents() {
+            const carousel = document.getElementById('past-events-carousel');
+            try {
+                // Simulate fetch API data
+                const events = [
+                    {
+                        title: "Orientation Day",
+                        description: "Welcoming new students with an introduction to campus life.",
+                        event_date: "2023-08-01T09:00:00",
+                        location: "Main Auditorium",
+                        image: "orientation-day.jpg"
+                    },
+                    {
+                        title: "Hackathon 2023",
+                        description: "A 24-hour coding challenge to solve real-world problems.",
+                        event_date: "2023-06-15T10:00:00",
+                        location: "Tech Hall",
+                        image: "hackathon.jpg"
+                    },
+                    {
+                        title: "Cultural Festival",
+                        description: "Celebrating diversity with music, dance, and food.",
+                        event_date: "2023-05-20T18:00:00",
+                        location: "Campus Grounds",
+                        image: "cultural-festival.jpg"
+                    },
+                    {
+                        title: "Guest Lecture Series",
+                        description: "Insights on AI trends by industry leaders.",
+                        event_date: "2023-03-10T14:00:00",
+                        location: "Lecture Hall B",
+                        image: "guest-lecture.jpg"
+                    },
+                    {
+                        title: "Sports Day",
+                        description: "Inter-departmental sports competitions and games.",
+                        event_date: "2023-02-25T08:00:00",
+                        location: "Sports Complex",
+                        image: "sports-day.jpg"
+                    }
+                ];
+
+                // Populate carousel with event data
+                carousel.innerHTML = '';
+                events.forEach(event => {
+                    const eventItem = document.createElement('div');
+                    eventItem.className = 'carousel-item';
+                    eventItem.innerHTML = `
+                        <img src="images/${event.image}" alt="${event.title}">
+                        <h3>${event.title}</h3>
+                        <p class="date">${new Date(event.event_date).toLocaleString()}</p>
+                        <p>${event.description}</p>
+                        <p><strong>Location:</strong> ${event.location}</p>
+                    `;
+                    carousel.appendChild(eventItem);
+                });
+            } catch (error) {
+                console.error('Error fetching past events:', error);
+                carousel.innerHTML = '<p>Failed to load past events.</p>';
+            }
+        }
+
+        function scrollCarousel(direction) {
+            const carousel = document.getElementById('past-events-carousel');
+            const scrollAmount = 320; // Adjust based on item width + gap
+            carousel.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+
+        fetchPastEvents();
+    </script>
+</body>
+
+</html>
