@@ -1,0 +1,21 @@
+echo # Node.js dependencies >> .gitignore
+echo node_modules/ >> .gitignore
+
+echo # Logs >> .gitignore
+echo *.log >> .gitignore
+
+echo # Environment files >> .gitignore
+echo .env >> .gitignore
+
+echo # IDE-specific files >> .gitignore
+echo .vscode/ >> .gitignore
+echo .idea/ >> .gitignore
+
+echo # OS-generated files >> .gitignore
+echo .DS_Store >> .gitignore
+echo Thumbs.db >> .gitignore
+echo desktop.ini >> .gitignore
+
+echo # Temp files >> .gitignore
+echo *.bak >> .gitignore
+
