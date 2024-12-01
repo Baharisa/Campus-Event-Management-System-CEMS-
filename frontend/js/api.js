@@ -1,6 +1,9 @@
+// Define the base URL for the API
 const apiBaseUrl = 'http://localhost:3000/api/v1';
 
-// Fetch all events
+/**
+ * Fetch all events from the backend
+ */
 async function fetchEvents() {
   try {
     const response = await fetch(`${apiBaseUrl}/events`, {
@@ -19,7 +22,9 @@ async function fetchEvents() {
   }
 }
 
-// Create a new event
+/**
+ * Create a new event
+ */
 async function createEvent(eventData) {
   try {
     const response = await fetch(`${apiBaseUrl}/events`, {
@@ -38,7 +43,9 @@ async function createEvent(eventData) {
   }
 }
 
-// Update an existing event
+/**
+ * Update an existing event
+ */
 async function updateEvent(eventId, updatedData) {
   try {
     const response = await fetch(`${apiBaseUrl}/events/${eventId}`, {
@@ -57,7 +64,9 @@ async function updateEvent(eventId, updatedData) {
   }
 }
 
-// Delete an event
+/**
+ * Delete an event
+ */
 async function deleteEvent(eventId) {
   try {
     const response = await fetch(`${apiBaseUrl}/events/${eventId}`, {
@@ -75,7 +84,9 @@ async function deleteEvent(eventId) {
   }
 }
 
-// Register for an event
+/**
+ * Register for an event
+ */
 async function registerForEvent(eventId, userData) {
   try {
     const response = await fetch(`${apiBaseUrl}/events/${eventId}/register`, {
@@ -94,5 +105,76 @@ async function registerForEvent(eventId, userData) {
   }
 }
 
-// Export the functions for use in other files
-export { fetchEvents, createEvent, updateEvent, deleteEvent, registerForEvent };
+/**
+ * Fetch event statistics for the dashboard
+ */
+async function fetchEventStats() {
+  try {
+    const response = await fetch(`${apiBaseUrl}/events/dashboard-data`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`, // Include token if available
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error fetching event statistics: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching event statistics:', error);
+  }
+}
+
+/**
+ * Fetch recent activities for the dashboard
+ */
+async function fetchRecentActivities() {
+  try {
+    const response = await fetch(`${apiBaseUrl}/events/recent-activities`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`, // Include token if available
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error fetching recent activities: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching recent activities:', error);
+  }
+}
+
+/**
+ * Fetch a single event by ID
+ */
+async function fetchEventById(eventId) {
+  try {
+    const response = await fetch(`${apiBaseUrl}/events/${eventId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error fetching event by ID: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching event by ID:', error);
+  }
+}
+
+// Export the functions for use in other frontend files
+export {
+  fetchEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+  registerForEvent,
+  fetchEventStats,
+  fetchRecentActivities,
+  fetchEventById,
+};
