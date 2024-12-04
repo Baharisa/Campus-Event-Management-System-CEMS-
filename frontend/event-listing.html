@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,6 +134,7 @@
 </head>
 <body>
 
+    <!-- Navigation Bar -->
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
@@ -153,14 +152,17 @@
         </ul>
     </nav>
     
+    <!-- Page Header -->
     <header>
         <h1>Event Listing</h1>
         <button class="button" onclick="window.location.href='calendar.html'">View Calendar</button>
     </header>
     
+    <!-- Main Content -->
     <div class="container">
+        <!-- Static Events Section -->
         <div id="static-events">
-            <!-- Predefined events -->
+            <h3>Predefined Events</h3>
             <div class="event">
                 <h2>Tech Innovations Conference 2024</h2>
                 <img src="images/conference.jpg" alt="Tech Innovations Conference">
@@ -177,20 +179,23 @@
             </div>
         </div>
 
+        <!-- Dynamic Events Section -->
         <div id="dynamic-events">
-            <!-- Dynamic events will be fetched and loaded here -->
             <h3>Other Upcoming Events</h3>
             <div id="events-list"></div>
         </div>
     </div>
     
+    <!-- Footer -->
     <footer>
         <p>&copy; 2024 CEMS</p>
     </footer>
 
+    <!-- JavaScript for Dynamic Functionality -->
     <script type="module">
         import { fetchEvents } from './js/api.js';
 
+        // Display dynamic events
         async function displayEvents() {
             const eventsList = document.getElementById('events-list');
             eventsList.innerHTML = '<p>Loading events...</p>';
@@ -218,9 +223,10 @@
             }
         }
 
+        // Register for an event dynamically
         async function registerEvent(eventId) {
             try {
-                const response = await fetch(`http://localhost:3000/api/v1/events/${eventId}/register`, {
+                const response = await fetch(`http://localhost:3000/api/events/${eventId}/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -241,11 +247,12 @@
             }
         }
 
+        // Placeholder for static events
         function registerStaticEvent(eventId) {
             alert(`Static Event ${eventId} registration is a placeholder!`);
-            // Implement backend integration if needed
         }
 
+        // Initialize event display
         displayEvents();
     </script>
 </body>

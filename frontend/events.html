@@ -136,7 +136,7 @@
     </header>
     
     <div class="container">
-        <h2>Upcoming Events</h2>
+        <h2>Static Upcoming Events</h2>
         <div id="upcoming-events">
             <div class="event">
                 <h2>Tech Innovations Conference 2024</h2>
@@ -152,6 +152,14 @@
                 <p><strong>Location:</strong> City Park</p>
                 <p><strong>Description:</strong> Participate in our charity run to support local charities. Enjoy a day of fitness and fun while making a difference in the community.</p>
                 <button onclick="window.location.href='register.html'">RSVP Now</button>
+            </div>
+        </div>
+
+        <!-- Dynamic events section -->
+        <h2>Dynamic Upcoming Events</h2>
+        <div id="dynamic-events">
+            <div id="events-list">
+                <!-- Dynamic events will be loaded here -->
             </div>
         </div>
 
@@ -181,8 +189,53 @@
     <footer>
         <p>&copy; 2024 Campus Event Management System (CEMS)</p>
     </footer>
-    
-    <script src="js/api.js" type="module"></script>
-    <script src="js/main.js" type="module"></script>
+
+    <!-- Add the updated script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            displayEvents();
+        });
+
+        async function fetchEvents() {
+            try {
+                const response = await fetch('http://localhost:3000/api/v1/events');
+                if (!response.ok) throw new Error('Failed to fetch events');
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching events:', error);
+                return [];
+            }
+        }
+
+        async function displayEvents() {
+            const eventsList = document.getElementById('events-list');
+            if (!eventsList) {
+                console.error('Element with ID "events-list" not found.');
+                return;
+            }
+
+            eventsList.innerHTML = '<p>Loading events...</p>';
+
+            try {
+                const events = await fetchEvents();
+                if (events.length === 0) {
+                    eventsList.innerHTML = '<p>No events found.</p>';
+                    return;
+                }
+
+                eventsList.innerHTML = events.map(event => `
+                    <div class="event">
+                        <h2>${event.title}</h2>
+                        <p><strong>Date:</strong> ${event.date}</p>
+                        <p><strong>Description:</strong> ${event.description}</p>
+                        <button onclick="alert('Registered for ${event.title}')">RSVP Now</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error displaying events:', error);
+                eventsList.innerHTML = '<p>Error loading events. Please try again later.</p>';
+            }
+        }
+    </script>
 </body>
 </html>

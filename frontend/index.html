@@ -232,14 +232,17 @@
                 </li>
                 <li><a href="feedback.html">Feedback</a></li>
                 <li><a href="profile.html">Profile</a></li>
+                
             </ul>
         </nav>
+        
     </header>
 
     <div class="hero">
         <h2>Welcome to CEMS</h2>
         <p>Your one-stop solution for managing campus events.</p>
         <button onclick="window.location.href='event-listing.html'">Explore Events</button>
+        <button onclick="window.location.href='login.html'" style="background-color: #4285f4;">Login</button> <!-- Add Login button -->
     </div>
 
     <div class="main-content">
@@ -248,6 +251,7 @@
             <div id="events-container">
                 <div class="carousel">
                     <div class="carousel-inner">
+                        <!-- Static images are kept intact -->
                         <div class="carousel-item active">
                             <img src="images/freshers-party.jpg" alt="Freshers' Party" class="carousel-image">
                             <div class="carousel-caption">
@@ -284,6 +288,11 @@
                 <a href="register.html" class="button">Register Now</a>
             </div>
             <div class="events">
+                <h4>Already a Member?</h4>
+                <p>Log in to access your dashboard and manage your events.</p>
+                <a href="login.html" class="button">Login</a> <!-- Add Login button -->
+            </div>
+            <div class="events">
                 <h4>Past Events Summary</h4>
                 <p>Check out the summary of our past events.</p>
                 <a href="past-events.html" class="button">View Past Events</a>
@@ -304,8 +313,36 @@
             const totalItems = items.length;
 
             currentIndex = (currentIndex + direction + totalItems) % totalItems;
-            carouselInner.style.transform = translateX(-${currentIndex * 100}%);
+            carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
         }
+
+        // Fetch events from the backend API
+        async function fetchEvents() {
+            try {
+                const response = await fetch('http://localhost:3000/api/events');
+                const events = await response.json();
+
+                const eventsContainer = document.getElementById('events-container');
+                const carouselInner = document.querySelector('.carousel-inner');
+                events.forEach(event => {
+                    const eventElement = document.createElement('div');
+                    eventElement.classList.add('carousel-item');
+                    eventElement.innerHTML = `
+                        <img src="images/${event.image}" alt="${event.name}" class="carousel-image">
+                        <div class="carousel-caption">
+                            <h4>${event.name}</h4>
+                            <p>${event.description}</p>
+                        </div>
+                    `;
+                    carouselInner.appendChild(eventElement);
+                });
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        }
+
+        // Call the fetch function on page load
+        window.onload = fetchEvents;
     </script>
 </body>
 
